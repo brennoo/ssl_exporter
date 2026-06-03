@@ -47,14 +47,14 @@ docker:
 	@docker build -t "$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)" -f Dockerfile.local .
 
 $(GOPATH)/bin/goreleaser:
-	@go install github.com/goreleaser/goreleaser@v1.2.2
+	@go install github.com/goreleaser/goreleaser/v2@v2.16.0
 
 snapshot: $(GOPATH)/bin/goreleaser
 	@echo ">> building snapshot"
-	@$(GOPATH)/bin/goreleaser --snapshot --skip-sign --skip-validate --skip-publish --rm-dist
+	@$(GOPATH)/bin/goreleaser release --snapshot --clean --skip=sign,validate,publish
 
 release: $(GOPATH)/bin/goreleaser
-	@$(GOPATH)/bin/goreleaser release
+	@$(GOPATH)/bin/goreleaser release --clean
 
 clean:
 	@echo ">> removing build artifacts"
